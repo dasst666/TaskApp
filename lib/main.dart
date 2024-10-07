@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'tab_item.dart';
 import 'search.dart';
+import 'card_item.dart';
+import 'add_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -83,102 +85,73 @@ class TabBarPage extends StatelessWidget {
               ),
             ),
           ),
-          body: TabBarView(children: [
-            const Card(
-              child: ListTile(
-                leading: CircleAvatar(
-                  radius: 5,
-                ),
-                title: Text('Interview'),
-                subtitle: Text('Remember to bring laptop'),
-                trailing: Icon(Icons.more_vert),
-              ),
-            ),
+          body: const TabBarView(children: [
+            Icon(Icons.dangerous),
             Column(
               children: [
-                Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 6,
-                          spreadRadius: 2,
-                        ),
-                      ]),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 4,
-                                    backgroundColor: Color.fromARGB(255, 175, 134, 183),
-                                  ),
-                                  SizedBox(width: 10,),
-                                  Text('Interview',
-                                      style: TextStyle(fontSize: 18)),
-                                ],
-                              ),
-                              SizedBox(height: 8),
-                              Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: Text('Remember to bring laptop',
-                                    style: TextStyle(color: Colors.grey)),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 30),
-                        child: Text("9:00 am", style: TextStyle(color: Colors.grey, fontSize: 12),),
-                      )
-                    ],
-                  ),
+                CardItem(
+                  title: 'Go to school',
+                  subtitle: 'Take pencil',
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 6,
-                          spreadRadius: 2,
-                        ),
-                      ]),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Interview', style: TextStyle(fontSize: 18)),
-                      SizedBox(height: 8),
-                      Text('Remember to bring laptop',
-                          style: TextStyle(color: Colors.grey)),
-                    ],
-                  ),
+                CardItem(
+                  title: 'Drink water',
+                  subtitle: 'Go to market',
                 ),
               ],
             ),
-            const Icon(Icons.directions_bike),
+            Icon(Icons.directions_bike),
           ]),
+          floatingActionButton: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: FloatingActionButton(
+              onPressed: () {
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => const AddScreen()));
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) {
+                      return DraggableScrollableSheet(
+                          initialChildSize: 0.8,
+                          minChildSize: 0.4,
+                          maxChildSize: 0.9,
+                          builder: (_, controller) {
+                            return Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(50),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: AddScreen(scrollController: controller),
+                              ),
+                            );
+                          });
+                    });
+              },
+              backgroundColor: Colors.blue,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add_circle,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    "Add new task",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         ));
   }
 }
